@@ -1,20 +1,21 @@
 const args = process.argv;
 var path = require('path'), fs=require('fs');
-var ObjsearchResult = {startPath:"C:\\MyFolder",FilesContainingOri:[],FileType:args[2],Srch:args[3]};
-
-var searchDirtxtOri = function (ObjParm){
+var ObjsearchResult = {FilesContainingOri:[],FileType:args[2],Srch:args[3]};
+let startDir = "C:\\MyFolder"
+var searchDirtxtOri = (ObjParm,startPath)=>{
 	
-    if (!fs.existsSync(ObjParm.startPath)){
-        console.log("no dir ",ObjParm.startPath);
+    if (!fs.existsSync(startPath)){
+        console.log("no dir ",startPath);
         return;
     }
-    var files=fs.readdirSync(ObjParm.startPath);
+    var files=fs.readdirSync(startPath);
 	
     for(var i=0;i<files.length;i++){
-        var filename=path.join(ObjParm.startPath,files[i]);
+        var filename=path.join(startPath,files[i]);
         var stat = fs.lstatSync(filename);
         if (stat.isDirectory()){
-            searchDirtxtOri(ObjParm); //recurse
+			//console.log("Sub Dir:"+filename);
+            searchDirtxtOri(ObjParm,filename); //recurse
         }
         else if (path.extname(files[i]) ===  ObjParm.FileType) {
             var text = fs.readFileSync(filename).toString('utf-8');
@@ -26,5 +27,5 @@ var searchDirtxtOri = function (ObjParm){
     };
 };
 
-var searchRes = searchDirtxtOri(ObjsearchResult);
+var searchRes = searchDirtxtOri(ObjsearchResult,startDir);
 console.log(ObjsearchResult.FilesContainingOri);
