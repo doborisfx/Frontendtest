@@ -1,7 +1,7 @@
 const args = process.argv;
 var path = require('path'), fs=require('fs');
 var ObjsearchResult = {FilesContainingOri:[],FileType:args[2],Srch:args[3]};
-let startDir = "C:\\MyFolder"
+let startDir = ".\\"
 var searchDirtxtOri = (ObjParm,startPath)=>{
 	
     if (!fs.existsSync(startPath)){
